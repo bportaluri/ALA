@@ -74,6 +74,7 @@ private:
     void blink();
     void blinkAlt();
     void sparkle();
+    void sparkle2();
     void strobo();
 	
     void pixelShiftRight();
@@ -81,9 +82,12 @@ private:
     void pixelBounce();
     void pixelSmoothShiftRight();
     void pixelSmoothShiftLeft();
+	void pixelSmoothBounce();
     void comet();
     void barShiftRight();
     void barShiftLeft();
+    void larsonScanner();
+    void larsonScanner2();
 	
     void fadeIn();
     void fadeOut();

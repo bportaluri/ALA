@@ -31,12 +31,15 @@
 #define ALA_PIXELBOUNCE 203
 #define ALA_PIXELSMOOTHSHIFTRIGHT 211
 #define ALA_PIXELSMOOTHSHIFTLEFT 212
+#define ALA_PIXELSMOOTHBOUNCE 213
 #define ALA_COMET 221
 #define ALA_COMETCOL 222
 #define ALA_BARSHIFTRIGHT 231
 #define ALA_BARSHIFTLEFT 232
 #define ALA_MOVINGBARS 241
 #define ALA_MOVINGGRADIENT 242
+#define ALA_LARSONSCANNER 251
+#define ALA_LARSONSCANNER2 252
 
 #define ALA_FADEIN 301
 #define ALA_FADEOUT 302
@@ -123,6 +126,7 @@ typedef struct AlaColor
         int b0 = min(b*k, 255);
         return AlaColor(r0, g0, b0);
     }
+	
     
     typedef enum {
         Aqua=0x00FFFF,
@@ -197,17 +201,9 @@ typedef struct AlaSeq
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// Colors and palette definitions
+// Palette definitions
 ////////////////////////////////////////////////////////////////////////////////
 
-/* Replaced by enum
-static AlaColor alaColorWhite = 0xFFFFFF;
-static AlaColor alaColorGray = 0x888888;
-static AlaColor alaColorBlack = 0x000000;
-static AlaColor alaColorRed = 0xFF0000;
-static AlaColor alaColorGreen = 0x00FF00;
-static AlaColor alaColorBlue = 0x0000FF;
-*/
 
 static AlaColor alaPalRgb_[] = { 0xFF0000, 0x00FF00, 0x0000FF };
 static AlaPalette alaPalRgb = { 3, alaPalRgb_ };

@@ -69,8 +69,14 @@ private:
     void pixelSmoothShiftLeft();
     void comet();
     void cometCol();
+	void pixelSmoothBounce();
+	void larsonScanner();
+	void larsonScanner2();
 
-	void glow();
+	void fadeIn();
+    void fadeOut();
+    void fadeInOut();
+    void glow();
 	void fadeColors();
 	void pixelsFadeColors();
 	void fadeColorsLoop();

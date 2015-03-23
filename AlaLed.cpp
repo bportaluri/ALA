@@ -3,8 +3,6 @@
 #include "ExtTlc5940.h"
 
 
-
-
 AlaLed::AlaLed()
 {
 	maxOut=255;
@@ -49,10 +47,6 @@ void AlaLed::initTLC5940(int numLeds, byte *pins)
 	{
 		memset(leds, 0, numLeds);
 	}
-
-	//pins = (byte *)malloc(numLeds);
-	//for(int i=0; i<numLeds; i++)
-    //    pins[i]=i;
 
 	Tlc.init(0);
 }
@@ -156,6 +150,7 @@ void AlaLed::setAnimationFunc(int animation)
 		case ALA_BLINK:                 animFunc = &AlaLed::blink;                 break;
 		case ALA_BLINKALT:              animFunc = &AlaLed::blinkAlt;              break;
 		case ALA_SPARKLE:               animFunc = &AlaLed::sparkle;               break;
+		case ALA_SPARKLE2:              animFunc = &AlaLed::sparkle2;              break;
 		case ALA_STROBO:                animFunc = &AlaLed::strobo;                break;
 		
 		case ALA_PIXELSHIFTRIGHT:       animFunc = &AlaLed::pixelShiftRight;       break;
@@ -163,9 +158,12 @@ void AlaLed::setAnimationFunc(int animation)
 		case ALA_PIXELBOUNCE:           animFunc = &AlaLed::pixelBounce;           break;
 		case ALA_PIXELSMOOTHSHIFTRIGHT: animFunc = &AlaLed::pixelSmoothShiftRight; break;
 		case ALA_PIXELSMOOTHSHIFTLEFT:  animFunc = &AlaLed::pixelSmoothShiftLeft;  break;
+		case ALA_PIXELSMOOTHBOUNCE:     animFunc = &AlaLed::pixelSmoothBounce;     break;
 		case ALA_COMET:                 animFunc = &AlaLed::comet;                 break;
 		case ALA_BARSHIFTRIGHT:         animFunc = &AlaLed::barShiftRight;         break;
 		case ALA_BARSHIFTLEFT:          animFunc = &AlaLed::barShiftLeft;          break;
+		case ALA_LARSONSCANNER:         animFunc = &AlaLed::larsonScanner;         break;
+		case ALA_LARSONSCANNER2:        animFunc = &AlaLed::larsonScanner2;        break;
 		
 		case ALA_FADEIN:                animFunc = &AlaLed::fadeIn;                break;
 		case ALA_FADEOUT:               animFunc = &AlaLed::fadeOut;               break;
@@ -221,21 +219,25 @@ void AlaLed::blinkAlt()
 
 void AlaLed::sparkle()
 {
-    static long tStart;
-	
-	if (millis()<tStart+50)
-		return;
-
-    for(int x=0; x<numLeds; x++)
+    int p = speed/100;
+	for(int x=0; x<numLeds; x++)
     {
-		if(random(16)==0)
+		leds[x] = (random(p)==0)*maxOut;
+    }
+}
+
+void AlaLed::sparkle2()
+{
+    int p = speed/10;
+	for(int x=0; x<numLeds; x++)
+    {
+		if(random(p)==0)
 			leds[x] = maxOut;
 		else
-			leds[x] = 0;
+			leds[x] = leds[x] * 0.88;
     }
-    
-    tStart=millis();
 }
+
 
 
 void AlaLed::strobo()
@@ -284,6 +286,7 @@ void AlaLed::pixelBounce()
 		leds[x] = (x==(-abs(t-numLeds+1)+numLeds-1) ? 1:0)*maxOut;
 	}
 }
+
 
 
 void AlaLed::pixelSmoothShiftRight()
@@ -351,6 +354,41 @@ void AlaLed::barShiftLeft()
 	}
 }
 
+void AlaLed::pixelSmoothBounce()
+{
+	// see larsonScanner
+	float t = getStepFloat(animStartTime, speed, 2*numLeds-2);
+
+	for(int x=0; x<numLeds; x++)
+	{
+		leds[x] = constrain((int)((-abs(abs(t-numLeds+1)-x)+1)*maxOut), 0, maxOut);
+	}
+}
+
+
+void AlaLed::larsonScanner()
+{
+	float l = numLeds/4;
+	float t = getStepFloat(animStartTime, speed, 2*numLeds-2);
+
+	for(int x=0; x<numLeds; x++)
+	{
+		leds[x] = constrain((int)((-abs(abs(t-numLeds+1)-x)+l)*maxOut), 0, maxOut);
+	}
+}
+
+void AlaLed::larsonScanner2()
+{
+	float l = numLeds/4;  // 2>7, 3-11, 4-14
+	float t = getStepFloat(animStartTime, speed, 2*numLeds+(l*4-1));
+
+	for(int x=0; x<numLeds; x++)
+	{
+
+		leds[x] = constrain((int)((-abs(abs(t-numLeds-2*l)-x-l)+l)*maxOut), 0, maxOut);
+	}
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////
 // Fading effects
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -360,7 +398,7 @@ void AlaLed::fadeIn()
 	int s = getStep(animStartTime, speed, maxOut);
 	for(int x=0; x<numLeds; x++)
 	{
-		leds[numLeds-x-1] = s;
+		leds[x] = s;
 	}
 }
 
@@ -370,7 +408,7 @@ void AlaLed::fadeOut()
 	int s = getStep(animStartTime, speed, maxOut);
 	for(int x=0; x<numLeds; x++)
 	{
-		leds[numLeds-x-1] = abs(maxOut-s);
+		leds[x] = abs(maxOut-s);
 	}
 }
 
@@ -381,7 +419,7 @@ void AlaLed::fadeInOut()
 
 	for(int x=0; x<numLeds; x++)
 	{
-		leds[numLeds-x-1] = abs(maxOut-abs(s));
+		leds[x] = abs(maxOut-abs(s));
 	}
 }
 
@@ -392,6 +430,6 @@ void AlaLed::glow()
 
 	for(int x=0; x<numLeds; x++)
 	{
-		leds[numLeds-x-1] = (-cos(s)+1)*maxOut/2;
+		leds[x] = (-cos(s)+1)*maxOut/2;
 	}
 }
