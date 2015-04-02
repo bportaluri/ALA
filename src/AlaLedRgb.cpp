@@ -105,7 +105,7 @@ int AlaLedRgb::getRefreshRate()
 }
 
 	
-void AlaLedRgb::setAnimation(int animation, int speed, AlaColor color)
+void AlaLedRgb::setAnimation(int animation, long speed, AlaColor color)
 {
 	if (this->animation == animation && this->speed == speed && this->palette.numColors == 1 && this->palette.colors[0] == color)
 		return;
@@ -127,7 +127,7 @@ void AlaLedRgb::setAnimation(int animation, int speed, AlaColor color)
 	animStartTime = millis();
 }
 
-void AlaLedRgb::setAnimation(int animation, int speed, AlaPalette palette)
+void AlaLedRgb::setAnimation(int animation, long speed, AlaPalette palette)
 {
 	if (this->animation == animation && this->speed == speed && this->palette == palette)
 		return;
@@ -268,7 +268,6 @@ void AlaLedRgb::setAnimationFunc(int animation)
 		case ALA_PIXELSFADECOLORS:      animFunc = &AlaLedRgb::pixelsFadeColors;      break;
 		case ALA_FADECOLORS:            animFunc = &AlaLedRgb::fadeColors;            break;
 		case ALA_FADECOLORSLOOP:        animFunc = &AlaLedRgb::fadeColorsLoop;        break;
-		
 
 		case ALA_FIRE:                  animFunc = &AlaLedRgb::fire;                  break;
 		case ALA_BOUNCINGBALLS:         animFunc = &AlaLedRgb::bouncingBalls;         break;
@@ -721,7 +720,7 @@ void AlaLedRgb::bubbles()
 
 		for (int i=0; i<palette.numColors; i++)
 		{
-			pxPos[i] = 0;
+			pxPos[i] = ((float)random(255))/255;
 			pxSpeed[i] = 0;
 		}
 		lastRefresh = millis();

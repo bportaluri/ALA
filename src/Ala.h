@@ -97,12 +97,12 @@ typedef struct AlaColor
     {
         return(this->r == c.r and this->g == c.g and this->b == c.b);
     }
-    
+/*
     AlaColor getPixel(AlaColor maxOut)
     {
         return AlaColor(r*maxOut.r/255, g*maxOut.g/255, b*maxOut.b/255);
     }
-
+*/
     AlaColor sum(AlaColor color)
     {
         int r0 = min(color.r + r, 255);
@@ -194,9 +194,9 @@ typedef struct AlaPalette
 typedef struct AlaSeq
 {
     int animation;
-    int speed;
+    long speed;
     AlaPalette palette;
-    int duration;
+    long duration;
 };
 
 

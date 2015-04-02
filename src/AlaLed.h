@@ -57,13 +57,14 @@ public:
     * May be useful to reduce flickering in some cases.
     */
     void setRefreshRate(int refreshRate);
+	
+	int getRefreshRate();
 
-
-    void setAnimation(int animation, int speed);
+    void setAnimation(int animation, long speed);
     void setAnimation(AlaSeq animSeq[]);
 
     void runAnimation();
-
+	void nextAnimation();
 
 
 private:
@@ -104,8 +105,8 @@ private:
     int refreshMillis;
 
     int animation;
+	int currAnim;
     long speed;
-
     AlaSeq *animSeq;
     int animSeqLen;
     long animSeqDuration;

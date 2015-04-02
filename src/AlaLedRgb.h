@@ -42,8 +42,8 @@ public:
 	int getRefreshRate();
 
 
-	void setAnimation(int animation, int speed, AlaColor color);
-	void setAnimation(int animation, int speed, AlaPalette palette);
+	void setAnimation(int animation, long speed, AlaColor color);
+	void setAnimation(int animation, long speed, AlaPalette palette);
 	void setAnimation(AlaSeq animSeq[]);
 	bool runAnimation();
 	void nextAnimation();

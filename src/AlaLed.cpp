@@ -62,7 +62,7 @@ void AlaLed::setRefreshRate(int refreshRate)
 }
 
 
-void AlaLed::setAnimation(int animation, int speed)
+void AlaLed::setAnimation(int animation, long speed)
 {
 	if (this->animation == animation && this->speed == speed)
 		return;
@@ -88,6 +88,10 @@ void AlaLed::setAnimation(AlaSeq animSeq[])
 
 }
 
+void AlaLed::nextAnimation()
+{
+	currAnim = (currAnim+1)%animSeqLen;
+}
 
 void AlaLed::runAnimation()
 {
