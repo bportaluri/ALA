@@ -15,8 +15,8 @@ AlaLed alaLed;
 
 void setup()
 {
-  // initialize the led attached to pin 13
-  alaLed.initPWM(13);
+  // initialize the led attached to pin 11
+  alaLed.initPWM(11);
   
   // set a fading animation with a duration of 2 seconds
   alaLed.setAnimation(ALA_FADEIN, 2000);
