@@ -19,26 +19,30 @@ AlaLedRgb rgbLed;
 
 // custom palette :     black   , white   , black   , red     , green   , blue
 AlaColor mycolors_[6] = { 0x000000, 0xFFFFFF, 0x000000, 0xFF0000, 0x00FF00, 0x0000FF };
-AlaPalette mycolors = { 6, colors_ };
+AlaPalette mycolors = { 6, mycolors_ };
 
 
 AlaSeq seq[] =
 {
-  { ALA_CYCLECOLORS, 3000, 3000, alaPalRgb },
-  { ALA_OFF, 1000, 1000, NULL },
-  { ALA_FADECOLORSLOOP, 4000, 8000, alaPalRgb },
-  { ALA_FADECOLORSLOOP, 500, 4000, mycolors },
-  { ALA_OFF, 1000, 1000, NULL },
-  { ALA_FADECOLORS, 5000, 5000, mycolors },
-  { ALA_OFF, 1000, 1000, NULL },
-  { ALA_ENDSEQ, 0, 0, NULL }
+  { ALA_CYCLECOLORS, 3000, alaPalRgb, 3000 },
+  { ALA_OFF, 1000, alaPalNull, 1000 },
+  { ALA_FADECOLORSLOOP, 4000, alaPalRgb, 8000 },
+  { ALA_FADECOLORSLOOP, 500, mycolors, 4000 },
+  { ALA_OFF, 1000, alaPalNull, 1000 },
+  { ALA_FADECOLORS, 5000, mycolors, 5000 },
+  { ALA_OFF, 1000, alaPalNull, 1000 },
+  { ALA_ENDSEQ, 0, alaPalNull, 0 }
 };
 
 
 void setup()
 {
+  // initialize the RGB RED
   rgbLed.initPWM(REDPIN, GREENPIN, BLUEPIN);
-  rgbLed.setBrightness(0x33FF22);
+  
+  // set the brightness of the LED calibrating white
+  rgbLed.setBrightness(0x66FF44);
+  
   rgbLed.setAnimation(seq);
 }
 

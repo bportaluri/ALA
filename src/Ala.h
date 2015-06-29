@@ -204,7 +204,11 @@ typedef struct AlaSeq
 // Palette definitions
 ////////////////////////////////////////////////////////////////////////////////
 
+// Empty palette
+static AlaColor alaPalNull_[] = { };
+static AlaPalette alaPalNull = { 0, alaPalNull_ };
 
+// Red,Green,Blue sequence
 static AlaColor alaPalRgb_[] = { 0xFF0000, 0x00FF00, 0x0000FF };
 static AlaPalette alaPalRgb = { 3, alaPalRgb_ };
 

@@ -18,12 +18,12 @@ AlaLedRgb rgbLed;
 
 void setup()
 {
-  rgbLed.initPWM(REDPIN, GREENPIN, BLUEPIN);
-  rgbLed.setBrightness(0x66FF44);  // calibrate white
-  rgbLed.setAnimation(ALA_FADECOLORSLOOP, 5000, alaPalRgb);
+  rgbLed.initPWM(REDPIN, GREENPIN, BLUEPIN);                 // initialize output pins
+  rgbLed.setBrightness(0x66FF44);                            // calibrate white
+  rgbLed.setAnimation(ALA_FADECOLORSLOOP, 5000, alaPalRgb);  // set the animation
 }
 
 void loop()
 {
-  rgbLed.runAnimation();
+  rgbLed.runAnimation();  // run the animation indefinitely
 }
