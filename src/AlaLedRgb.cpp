@@ -38,6 +38,11 @@ void AlaLedRgb::initPWM(int numLeds, byte *pins)
 	this->driver = ALA_PWM;
 	this->numLeds = numLeds;
 	this->pins = pins;
+	
+	for (int x=0; x<3*numLeds ; x++)
+	{
+		pinMode(pins[x], OUTPUT);
+	}
 
 	// allocate and clear leds array
 	if((leds = (AlaColor *)malloc(3*numLeds)))

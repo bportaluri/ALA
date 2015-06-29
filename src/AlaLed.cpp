@@ -29,6 +29,11 @@ void AlaLed::initPWM(int numLeds, byte *pins)
 	this->numLeds = numLeds;
 	this->pins = pins;
 
+	for (int x=0; x<numLeds ; x++)
+	{
+		pinMode(pins[x], OUTPUT);
+	}
+
 	// allocate and clear leds array
 	if((leds = (byte *)malloc(numLeds)))
 	{
