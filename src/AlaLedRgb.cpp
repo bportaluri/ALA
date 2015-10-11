@@ -25,7 +25,7 @@ AlaLedRgb::AlaLedRgb()
 
 void AlaLedRgb::initPWM(byte pinRed, byte pinGreen, byte pinBlue)
 {
-	byte *pins_ = (byte *)malloc(3*numLeds);
+	byte *pins_ = (byte *)malloc(3);
     pins_[0] = pinRed;
     pins_[1] = pinGreen;
     pins_[2] = pinBlue;
@@ -567,7 +567,6 @@ void AlaLedRgb::pixelsFadeColors()
 		AlaColor c = palette.getPalColor(t+7*x);
 		leds[x] = c;
 	}
-	
 }
 
 void AlaLedRgb::fadeColorsLoop()
@@ -611,7 +610,6 @@ void AlaLedRgb::movingGradient()
 		leds[x] = palette.getPalColor((float)((x+t)*palette.numColors)/numLeds);
 	}
 }
-
 
 
 void AlaLedRgb::fire()

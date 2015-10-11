@@ -94,6 +94,7 @@ private:
     void fadeOut();
     void fadeInOut();
     void glow();
+	void flame();
 
 
     byte driver;

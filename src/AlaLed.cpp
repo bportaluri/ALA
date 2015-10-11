@@ -3,6 +3,7 @@
 #include "ExtTlc5940.h"
 
 
+
 AlaLed::AlaLed()
 {
 	maxOut=255;
@@ -16,7 +17,7 @@ AlaLed::AlaLed()
 
 void AlaLed::initPWM(byte pin)
 {
-	byte *pins_ = (byte *)malloc(numLeds);
+	byte *pins_ = (byte *)malloc(1);
     pins_[0] = pin;
     
     initPWM(1, pins_);
@@ -178,6 +179,8 @@ void AlaLed::setAnimationFunc(int animation)
 		case ALA_FADEOUT:               animFunc = &AlaLed::fadeOut;               break;
 		case ALA_FADEINOUT:             animFunc = &AlaLed::fadeInOut;             break;
 		case ALA_GLOW:                  animFunc = &AlaLed::glow;                  break;
+		case ALA_FLAME:                 animFunc = &AlaLed::flame;                 break;
+		
 		default:                        animFunc = &AlaLed::off;
 	}
 }
@@ -440,5 +443,14 @@ void AlaLed::glow()
 	for(int x=0; x<numLeds; x++)
 	{
 		leds[x] = (-cos(s)+1)*maxOut/2;
+	}
+}
+
+void AlaLed::flame()
+{
+	for(int x=0; x<numLeds; x++)
+	{
+		if (random(4) == 0)
+			leds[x] = map(random(30)+70, 0, 100, 0, maxOut);
 	}
 }
