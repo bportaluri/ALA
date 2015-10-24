@@ -8,14 +8,13 @@
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
 
- 
 #include <AlaLed.h>
 
 AlaLed alaLed;
 
 void setup()
 {
-  // initialize the led attached to pin 11
+  // initialize the led attached to pin 11 with PWM driver
   alaLed.initPWM(11);
   
   // set a fading animation with a duration of 2 seconds
@@ -24,6 +23,7 @@ void setup()
 
 void loop()
 {
-  // animate the led
+  // run the animation
   alaLed.runAnimation();
 }
+

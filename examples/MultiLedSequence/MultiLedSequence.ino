@@ -11,7 +11,15 @@
 #include <AlaLed.h>
 
 AlaLed leds;
+
+// pins where the leds are connected
 byte pins[] = { 5, 6, 9, 10, 11 };
+
+// declare the animation sequence
+// each row has three values:
+// 1 - a numeric code identifying the desired animation, valid codes are listed in the Ala.h
+// 2 - the duration of the loop animationin milliseconds
+// 3 - the total duration of the animation in milliseconds
 
 AlaSeq seq[] =
 {
@@ -36,11 +44,15 @@ AlaSeq seq[] =
 
 void setup()
 {
-  leds.initPWM(3, pins);
+  // initialize the 5 leds attached to PWM pins
+  leds.initPWM(5, pins);
+
+  // set the animation sequence
   leds.setAnimation(seq);
 }
 
 void loop()
 {
+  // run the animation
   leds.runAnimation();
 }

@@ -1,7 +1,6 @@
 #ifndef AlaLedRgb_h
 #define AlaLedRgb_h
 
-
 #include "Ala.h"
 
 
@@ -89,11 +88,11 @@ private:
 	void bubbles();
 	
 
-	byte driver;
-	byte *pins;
-	byte pin;
-	AlaColor *leds;
-	int numLeds;
+	byte driver;    // type of led driver: ALA_PWM, ALA_TLC5940
+	byte *pins;     // pins where the leds are attached to
+	//byte pin;      
+	AlaColor *leds; // array to store leds brightness values
+	int numLeds;    // number of leds
     
 	int animation;
 	int currAnim;

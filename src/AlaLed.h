@@ -1,7 +1,6 @@
 #ifndef AlaLed_h
 #define AlaLed_h
 
-#include "Arduino.h"
 #include "Ala.h"
 
 
@@ -97,10 +96,10 @@ private:
 	void flame();
 
 
-    byte driver;
-    byte *pins;
-    byte *leds;
-    int numLeds;
+    byte driver; // type of led driver: ALA_PWM, ALA_TLC5940
+    byte *pins;  // pins where the leds are attached to
+    byte *leds;  // array to store leds brightness values
+    int numLeds; // number of leds
     
     int maxOut;
     int refreshMillis;

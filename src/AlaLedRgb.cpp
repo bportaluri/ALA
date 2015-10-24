@@ -1,10 +1,9 @@
 #include "Ala.h"
 #include "AlaLedRgb.h"
 
-#include "Arduino.h"
-
 #include "ExtNeoPixel.h"
 #include "ExtTlc5940.h"
+
 
 Adafruit_NeoPixel *neopixels;
 
@@ -45,10 +44,8 @@ void AlaLedRgb::initPWM(int numLeds, byte *pins)
 	}
 
 	// allocate and clear leds array
-	if((leds = (AlaColor *)malloc(3*numLeds)))
-	{
-		memset(leds, 0, 3*numLeds);
-	}
+	leds = (AlaColor *)malloc(3*numLeds);
+	memset(leds, 0, 3*numLeds);
 }
 
 void AlaLedRgb::initTLC5940(int numLeds, byte *pins)
@@ -58,14 +55,8 @@ void AlaLedRgb::initTLC5940(int numLeds, byte *pins)
 	this->pins = pins;
 
 	// allocate and clear leds array
-	if(leds = (AlaColor *)malloc(3*numLeds))
-	{
-		memset(leds, 0, 3*numLeds);
-	}
-
-	//pins = (byte *)malloc(numLeds);
-	//for(int i=0; i<numLeds; i++)
-    //    pins[i] = i;
+	leds = (AlaColor *)malloc(3*numLeds);
+	memset(leds, 0, 3*numLeds);
 
 	Tlc.init(0);
 }
@@ -74,13 +65,11 @@ void AlaLedRgb::initWS2812(int numLeds, byte pin, byte type)
 {
 	this->driver = ALA_WS2812;
 	this->numLeds = numLeds;
-	this->pins = pins;
+	//this->pins = pins;
 
 	// allocate and clear leds array
-	if((leds = (AlaColor *)malloc(3*numLeds)))
-	{
-		memset(leds, 0, 3*numLeds);
-	}
+	leds = (AlaColor *)malloc(3*numLeds);
+	memset(leds, 0, 3*numLeds);
 
 	neopixels = new Adafruit_NeoPixel(numLeds, pin, type);
 	

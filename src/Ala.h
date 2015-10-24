@@ -2,8 +2,8 @@
 #define Ala_h
 
 #include <stdint.h>
-
 #include "Arduino.h"
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // Drivers
@@ -65,7 +65,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
-typedef struct AlaColor
+struct AlaColor
 {
     union
     {
@@ -130,22 +130,22 @@ typedef struct AlaColor
 	
     
     typedef enum {
-        Aqua=0x00FFFF,
-        Black = 0x000000,
-        Blue = 0x0000FF,
-        Cyan=0x00FFFF,
-        Gold=0xFFD700,
-        Gray = 0x808080,
-        Green=0x008000,
-        Lime=0x00FF00,
-        Magenta=0xFF00FF,
-        Navy=0x000080,
-        Olive=0x808000,
-        Purple=0x800080,
-        Red=0xFF0000,
-        Teal=0x008080,
-        White=0xFFFFFF,
-        Yellow=0xFFFF00
+        Aqua    = 0x00FFFF,
+        Black   = 0x000000,
+        Blue    = 0x0000FF,
+        Cyan    = 0x00FFFF,
+        Gold    = 0xFFD700,
+        Gray    = 0x808080,
+        Green   = 0x008000,
+        Lime    = 0x00FF00,
+        Magenta = 0xFF00FF,
+        Navy    = 0x000080,
+        Olive   = 0x808000,
+        Purple  = 0x800080,
+        Red     = 0xFF0000,
+        Teal    = 0x008080,
+        White   = 0xFFFFFF,
+        Yellow  = 0xFFFF00
     } ColorCodes;
 } ;
 
@@ -155,7 +155,7 @@ typedef struct AlaColor
 // Struct definitions
 ////////////////////////////////////////////////////////////////////////////////
 
-typedef struct AlaPalette
+struct AlaPalette
 {
     int numColors;
     AlaColor *colors;
@@ -192,12 +192,12 @@ typedef struct AlaPalette
 };
 
 
-typedef struct AlaSeq
+struct AlaSeq
 {
     int animation;
     long speed;
-    AlaPalette palette;
     long duration;
+    AlaPalette palette;
 };
 
 

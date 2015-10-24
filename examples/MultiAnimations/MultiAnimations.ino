@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////////////////
 //
-// ALA library example: ALA Example - ComplexMultitasking
+// ALA library example: MultiAnimations
 //
 // Example to demonstrate how to drive different set of LEDs independently
 // using Arduino PWM output pins a TLC5940 chip and an WS2812 strip.
@@ -9,8 +9,8 @@
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
 
-#include "AlaLed.h"
-#include "AlaLedRgb.h"
+#include <AlaLed.h>
+#include <AlaLedRgb.h>
 
 byte tlcPins1[] = { 1, 2, 3 };
 byte tlcPins2[] = { 6,7,8, 9,10,11, 12,13,14 };
@@ -45,3 +45,4 @@ void loop()
   rgbLeds.runAnimation();
   rgbStrip.runAnimation();
 }
+

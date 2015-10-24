@@ -3,14 +3,13 @@
 #include "ExtTlc5940.h"
 
 
-
 AlaLed::AlaLed()
 {
-	maxOut=255;
+	maxOut = 255;
 	speed = 1000;
 	animSeqLen = 0;
-	lastRefreshTime=0;
-	refreshMillis=1000/50;
+	lastRefreshTime = 0;
+	refreshMillis = 1000/50;
 }
 
 
@@ -36,10 +35,8 @@ void AlaLed::initPWM(int numLeds, byte *pins)
 	}
 
 	// allocate and clear leds array
-	if((leds = (byte *)malloc(numLeds)))
-	{
-		memset(leds, 0, numLeds);
-	}
+	leds = (byte *)malloc(numLeds);
+	memset(leds, 0, numLeds);
 }
 
 void AlaLed::initTLC5940(int numLeds, byte *pins)
@@ -49,10 +46,8 @@ void AlaLed::initTLC5940(int numLeds, byte *pins)
 	this->pins = pins;
 
 	// allocate and clear leds array
-	if((leds = (byte *)malloc(numLeds)))
-	{
-		memset(leds, 0, numLeds);
-	}
+	leds = (byte *)malloc(numLeds);
+	memset(leds, 0, numLeds);
 
 	Tlc.init(0);
 }

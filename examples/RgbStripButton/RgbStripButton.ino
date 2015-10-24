@@ -1,6 +1,20 @@
+///////////////////////////////////////////////////////////////////////////////////////////
+//
+// ALA library example: RgbStripButton
+//
+// Example to demonstrate how to switch animations using three buttons.
+// The first button change the animation.
+// The second button the color palette.
+// The third button change the animation speed.
+//
+// Button library is required: http://playground.arduino.cc/Code/Button
+//
+// Web page: http://yaab-arduino.blogspot.com/p/ala-example-rgbstripbutton.html
+//
+///////////////////////////////////////////////////////////////////////////////////////////
 
-#include "AlaLedRgb.h"
-#include "Button.h"
+#include <AlaLedRgb.h>
+#include <Button.h>
 
 
 AlaLedRgb rgbStrip;
@@ -82,3 +96,4 @@ void updateAnimation()
 {
     rgbStrip.setAnimation(animList[animation%14], durationList[duration%3], paletteList[palette%3]);
 }
+

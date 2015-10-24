@@ -1,7 +1,5 @@
 #include "Ala.h"
 
-#include "Arduino.h"
-
 
 int getStep(long t0, long t, int v)
 {
