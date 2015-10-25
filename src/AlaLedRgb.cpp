@@ -8,6 +8,8 @@
 Adafruit_NeoPixel *neopixels;
 
 
+
+
 AlaLedRgb::AlaLedRgb()
 {
 	// set default values
@@ -65,7 +67,7 @@ void AlaLedRgb::initWS2812(int numLeds, byte pin, byte type)
 {
 	this->driver = ALA_WS2812;
 	this->numLeds = numLeds;
-	//this->pins = pins;
+	this->pins = 0;
 
 	// allocate and clear leds array
 	leds = (AlaColor *)malloc(3*numLeds);
@@ -101,6 +103,7 @@ int AlaLedRgb::getRefreshRate()
 	
 void AlaLedRgb::setAnimation(int animation, long speed, AlaColor color)
 {
+	// is there any change?
 	if (this->animation == animation && this->speed == speed && this->palette.numColors == 1 && this->palette.colors[0] == color)
 		return;
 	
@@ -123,6 +126,7 @@ void AlaLedRgb::setAnimation(int animation, long speed, AlaColor color)
 
 void AlaLedRgb::setAnimation(int animation, long speed, AlaPalette palette)
 {
+	// is there any change?
 	if (this->animation == animation && this->speed == speed && this->palette == palette)
 		return;
 	

@@ -4,6 +4,7 @@
 #include "Ala.h"
 
 
+
 /**
  *  AlaLedRgb can be used to drive a single or multiple RGB leds to perform animations.
  *  Available drivers are PWM pin, TLC5940, WS2811.
@@ -89,8 +90,7 @@ private:
 	
 
 	byte driver;    // type of led driver: ALA_PWM, ALA_TLC5940
-	byte *pins;     // pins where the leds are attached to
-	//byte pin;      
+	byte *pins;     // pins where the leds are attached to   
 	AlaColor *leds; // array to store leds brightness values
 	int numLeds;    // number of leds
     
