@@ -170,8 +170,8 @@ struct AlaPalette
         int i1 = (int)(i+1)%(numColors);
         
         // decimal part is used to interpolate between the two colors
-        //float t0 = i - trunc(i);
-        float t0 = i - (int)i;
+        float t0 = i - trunc(i);
+        //float t0 = i - (int)i;
 
         return colors[i0].interpolate(colors[i1], t0);
     }
@@ -221,6 +221,7 @@ extern AlaPalette alaPalParty;
 
 extern AlaPalette alaPalHeat;
 
+// Fire palette to be used with ALA_FIRE effect
 extern AlaPalette alaPalFire;
 
 
@@ -232,7 +233,6 @@ extern AlaPalette alaPalFire;
 
 int getStep(long t0, long t, int v);
 float getStepFloat(long t0, long t, float v);
-
 float mapfloat(float x, float in_min, float in_max, float out_min, float out_max);
 
 

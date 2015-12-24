@@ -18,7 +18,7 @@ AlaLedRgb::AlaLedRgb()
 	speed = 1000;
 	animSeqLen = 0;
 	lastRefreshTime = 0;
-	refreshMillis = 1000/60;
+	refreshMillis = 1000/50;
 	pxPos = NULL;
 	pxSpeed = NULL;
 }
@@ -90,14 +90,9 @@ void AlaLedRgb::setRefreshRate(int refreshRate)
 	this->refreshMillis = 1000/refreshRate;
 }
 
-int AlaLedRgb::getRefreshRate()
+int AlaLedRgb::getCurrentRefreshRate()
 {
-	static long t;
-
-	long el = millis() - t;
-	t = millis();
-	
-	return 1000/el;
+	return refreshRate;
 }
 
 	
@@ -164,10 +159,16 @@ void AlaLedRgb::nextAnimation()
 
 bool AlaLedRgb::runAnimation()
 {
-    // skip the refresh if now enough time has passed since last update
-	if (millis() < lastRefreshTime + refreshMillis)
+    // skip the refresh if not enough time has passed since last update
+	unsigned long cTime = millis();
+	if (cTime < lastRefreshTime + refreshMillis)
 		return false;
-	lastRefreshTime = millis();
+	
+	// calculate real refresh rate
+	refreshRate = 1000/(cTime - lastRefreshTime);
+	
+	lastRefreshTime = cTime;
+	
     
 	if (animSeqLen != 0)
     {
@@ -178,10 +179,9 @@ bool AlaLedRgb::runAnimation()
 		else
 		{
 			long c = 0;
+			long t = cTime % animSeqDuration;
 			for(int i=0; i<animSeqLen; i++)
 			{
-				long t = millis()%animSeqDuration;   // this loops
-				
 				if (t>=c && t<(c+animSeq[i].duration))
 				{
 					setAnimation(animSeq[i].animation, animSeq[i].speed, animSeq[i].palette);
@@ -196,23 +196,27 @@ bool AlaLedRgb::runAnimation()
     {
 		(this->*animFunc)();
 
+		// use an 8 bit shift to divide by 256
+		
 		if(driver==ALA_PWM)
 		{
 			for(int i=0; i<numLeds; i++)
 			{
-				analogWrite(pins[3*i], leds[i].r*maxOut.r/255);
-				analogWrite(pins[3*i+1], leds[i].g*maxOut.g/255);
-				analogWrite(pins[3*i+2], leds[i].b*maxOut.b/255);
+				int j = 3*i;
+				analogWrite(pins[j],   (leds[i].r*maxOut.r)>>8);
+				analogWrite(pins[j+1], (leds[i].g*maxOut.g)>>8);
+				analogWrite(pins[j+2], (leds[i].b*maxOut.b)>>8);
 			}
 		}
 		else if(driver==ALA_TLC5940)
 		{
+			// TLC5940 maximum output is 4095 so shifts only 4 bits
 			for(int i=0; i<numLeds; i++)
 			{
-				
-				Tlc.set(pins[3*i], (leds[i].r*maxOut.r/255)*16);
-				Tlc.set(pins[3*i+1], (leds[i].g*maxOut.g/255)*16);
-				Tlc.set(pins[3*i+2], (leds[i].b*maxOut.b/255)*16);
+				int j = 3*i;
+				Tlc.set(pins[j],   (leds[i].r*maxOut.r)>>4);
+				Tlc.set(pins[j+1], (leds[i].g*maxOut.g)>>4);
+				Tlc.set(pins[j+2], (leds[i].b*maxOut.b)>>4);
 			}
 			Tlc.update();
 		}
@@ -220,7 +224,7 @@ bool AlaLedRgb::runAnimation()
 		{
 			// this is not really so smart...
 			for(int i=0; i<numLeds; i++)
-				neopixels->setPixelColor(i, neopixels->Color(leds[i].r*maxOut.r/255, leds[i].g*maxOut.g/255, leds[i].b*maxOut.b/255));
+				neopixels->setPixelColor(i, neopixels->Color((leds[i].r*maxOut.r)>>8, (leds[i].g*maxOut.g)>>8, (leds[i].b*maxOut.b)>>8));
 			
 			neopixels->show();
 		}
@@ -605,12 +609,17 @@ void AlaLedRgb::movingGradient()
 }
 
 
+/*******************************************************************************
+* FIRE
+* Porting of the famous Fire2012 effect by Mark Kriegsman.
+* Actually works at 50 Hz frame rate with up to 50 pixels.
+*******************************************************************************/
 void AlaLedRgb::fire()
 {
     // COOLING: How much does the air cool as it rises?
     // Less cooling = taller flames.  More cooling = shorter flames.
     // Default 550
-    #define COOLING  550
+    #define COOLING  600
 
     // SPARKING: What chance (out of 255) is there that a new spark will be lit?
     // Higher chance = more roaring fire.  Lower chance = more flickery fire.
@@ -618,34 +627,36 @@ void AlaLedRgb::fire()
     #define SPARKING 120
 
     // Array of temperature readings at each simulation cell
-    //static byte heat[numLeds];
     static byte *heat = NULL;
+	
+	// Initialize array if necessary
     if (heat==NULL)
         heat = new byte[numLeds];
 
-    // Step 1.  Cool down every cell a little
-    for( int i = 0; i < numLeds; i++)
+	// Step 1.  Cool down every cell a little
+    int rMax = (COOLING / numLeds) + 2;
+	for(int i=0; i<numLeds; i++)
 	{
-      heat[i] = max((int)heat[i] - random(0, (COOLING / numLeds) + 2), 0);
+      heat[i] = max(((int)heat[i]) - random(0, rMax), 0);
     }
   
     // Step 2.  Heat from each cell drifts 'up' and diffuses a little
-    for( int k= numLeds - 1; k >= 2; k--)
+    for(int k=numLeds-1; k>=3; k--)
 	{
-      heat[k] = (heat[k - 1] + heat[k - 2] + heat[k - 2] ) / 3;
+      heat[k] = ((int)heat[k - 1] + (int)heat[k - 2] + (int)heat[k - 3] ) / 3;
     }
     
     // Step 3.  Randomly ignite new 'sparks' of heat near the bottom
-    if( random(255) < SPARKING )
+    if(random(255) < SPARKING)
 	{
       int y = random(7);
-      heat[y] = min((int)heat[y] + random(160,255), 255);
+      heat[y] = min(heat[y] + random(160, 255), 255);
     }
 
     // Step 4.  Map from heat cells to LED colors
     for(int j=0; j<numLeds; j++)
 	{
-      float colorindex = (float)(heat[j] * (palette.numColors-1) ) / 255;
+      float colorindex = (float)(heat[j] * (palette.numColors-1) ) / 256;
       leds[j] = palette.getPalColor(colorindex);
     }
 }

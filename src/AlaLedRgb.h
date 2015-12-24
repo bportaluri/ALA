@@ -39,7 +39,7 @@ public:
 	*/
 	void setRefreshRate(int refreshRate);
 	
-	int getRefreshRate();
+	int getCurrentRefreshRate();
 
 
 	void setAnimation(int animation, long speed, AlaColor color);
@@ -105,6 +105,7 @@ private:
     void (AlaLedRgb::*animFunc)();
     AlaColor maxOut;
 	int refreshMillis;
+	int refreshRate;   // current refresh rate
 	unsigned long animStartTime;
 	unsigned long lastRefreshTime;
 	
