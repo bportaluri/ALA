@@ -60,7 +60,13 @@ void AlaLedRgb::initTLC5940(int numLeds, byte *pins)
 	leds = (AlaColor *)malloc(3*numLeds);
 	memset(leds, 0, 3*numLeds);
 
-	Tlc.init(0);
+	// call Tlc.init only once
+	static bool isTlcInit = false;
+	if(!isTlcInit)
+	{
+		Tlc.init(0);
+		isTlcInit=true;
+	}
 }
 
 void AlaLedRgb::initWS2812(int numLeds, byte pin, byte type)

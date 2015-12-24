@@ -49,8 +49,16 @@ void AlaLed::initTLC5940(int numLeds, byte *pins)
 	leds = (byte *)malloc(numLeds);
 	memset(leds, 0, numLeds);
 
-	Tlc.init(0);
+	// call Tlc.init only once
+	static bool isTlcInit = false;
+	if(!isTlcInit)
+	{
+		Tlc.init(0);
+		isTlcInit=true;
+	}
 }
+	
+
 
 void AlaLed::setBrightness(byte maxOut)
 {
