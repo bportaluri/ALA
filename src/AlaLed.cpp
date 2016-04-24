@@ -114,6 +114,8 @@ void AlaLed::setAnimation(AlaSeq animSeq[])
 	this->animSeq = animSeq;
 
 	// initialize animSeqDuration and animSeqLen variables
+	currAnim = 0;
+	lastRefreshTime = 0;
     animSeqDuration = 0;
     for(animSeqLen=0; animSeq[animSeqLen].animation!=ALA_ENDSEQ; animSeqLen++)
     {
