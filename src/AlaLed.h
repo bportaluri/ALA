@@ -26,6 +26,16 @@ public:
     * Initializes LEDs driven by Arduino PWM pins. It be invoked in the setup() function of the main Arduino sketch.
     */
     void initPWM(int numLeds, byte *pins);
+    
+    /**
+    * Initializes a LED driven by a BuckPuck from an Arduino PWM pin. It be invoked in the setup() function of the main Arduino sketch.
+    */
+    void initBP(byte pin);
+
+    /**
+    * Initializes LEDs driven by BuckPucks from Arduino PWM pins. It be invoked in the setup() function of the main Arduino sketch.
+    */
+    void initBP(int numLeds, byte *pins);
 
     /**
     * Initializes LEDs driven by a TLC5940 chip. It be invoked in the setup() function of the main Arduino sketch.
