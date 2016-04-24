@@ -29,6 +29,7 @@ along with The Arduino ALA library.  If not, see
 #define ALA_PWM 1
 #define ALA_TLC5940 2
 #define ALA_WS2812 3
+#define ALA_BP 4
 
 
 ////////////////////////////////////////////////////////////////////////////////

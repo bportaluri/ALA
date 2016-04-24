@@ -39,6 +39,31 @@ void AlaLed::initPWM(int numLeds, byte *pins)
 	memset(leds, 0, numLeds);
 }
 
+void AlaLed::initBP(byte pin)
+{
+	byte *pins_ = (byte *)malloc(1);
+    pins_[0] = pin;
+    
+    initBP(1, pins_);
+}
+
+
+void AlaLed::initBP(int numLeds, byte *pins)
+{
+	this->driver = ALA_BP;
+	this->numLeds = numLeds;
+	this->pins = pins;
+
+	for (int x=0; x<numLeds ; x++)
+	{
+		pinMode(pins[x], OUTPUT);
+	}
+
+	// allocate and clear leds array
+	leds = (byte *)malloc(numLeds);
+	memset(leds, 0, numLeds);
+}
+
 void AlaLed::initTLC5940(int numLeds, byte *pins)
 {
 	this->driver = ALA_TLC5940;
@@ -89,6 +114,8 @@ void AlaLed::setAnimation(AlaSeq animSeq[])
 	this->animSeq = animSeq;
 
 	// initialize animSeqDuration and animSeqLen variables
+	currAnim = 0;
+	lastRefreshTime = 0;
     animSeqDuration = 0;
     for(animSeqLen=0; animSeq[animSeqLen].animation!=ALA_ENDSEQ; animSeqLen++)
     {
@@ -133,10 +160,14 @@ void AlaLed::runAnimation()
     {
 		(this->*animFunc)();
 
-		if(driver==ALA_PWM)
+		if((driver==ALA_PWM) || (driver==ALA_BP))
 		{
+			int offset = 0;
+			if (driver==ALA_BP)
+				offset = 255;
+				
 			for(int i=0; i<numLeds; i++)
-				analogWrite(pins[i], leds[i]);
+				analogWrite(pins[i], offset - leds[i]);
 		}
 		else if(driver==ALA_TLC5940)
 		{
