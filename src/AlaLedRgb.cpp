@@ -178,8 +178,7 @@ void AlaLedRgb::setAnimation(AlaSeq animSeq[])
 
 	// initialize animSeqDuration and animSeqLen variables
 	currAnim = 0;
-	animStartTime = millis();
-	lastRefreshTime = animStartTime - refreshMillis - 1;
+	lastRefreshTime = 0;
     animSeqDuration = 0;
     for(animSeqLen=0; animSeq[animSeqLen].animation!=ALA_ENDSEQ; animSeqLen++)
     {
