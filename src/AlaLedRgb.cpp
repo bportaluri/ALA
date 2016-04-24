@@ -57,7 +57,7 @@ void AlaLedRgb::initBP(byte pinRed, byte pinGreen, byte pinBlue)
     pins_[1] = pinGreen;
     pins_[2] = pinBlue;
     
-    initPWM(1, pins_);
+    initBP(1, pins_);
 }
 
 void AlaLedRgb::initBP(int numLeds, byte *pins)
