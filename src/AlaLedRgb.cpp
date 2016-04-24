@@ -232,18 +232,14 @@ bool AlaLedRgb::runAnimation()
 
 		// use an 8 bit shift to divide by 256
 		
-		if((driver==ALA_PWM) || (driver==ALA_BP))
+		if(driver==ALA_PWM)
 		{
-			int offset = 0;
-			if (driver==ALA_BP)
-				offset = 255;
-			
 			for(int i=0; i<numLeds; i++)
 			{
 				int j = 3*i;
-				analogWrite(pins[j],   offset - (leds[i].r*maxOut.r)>>8);
-				analogWrite(pins[j+1], offset - (leds[i].g*maxOut.g)>>8);
-				analogWrite(pins[j+2], offset - (leds[i].b*maxOut.b)>>8);
+				analogWrite(pins[j],   (leds[i].r*maxOut.r)>>8);
+				analogWrite(pins[j+1], (leds[i].g*maxOut.g)>>8);
+				analogWrite(pins[j+2], (leds[i].b*maxOut.b)>>8);
 			}
 		}
 		else if(driver==ALA_TLC5940)
@@ -265,6 +261,15 @@ bool AlaLedRgb::runAnimation()
 				neopixels->setPixelColor(i, neopixels->Color((leds[i].r*maxOut.r)>>8, (leds[i].g*maxOut.g)>>8, (leds[i].b*maxOut.b)>>8));
 			
 			neopixels->show();
+		}else if(driver==ALA_BP)
+		{
+			for(int i=0; i<numLeds; i++)
+			{
+				int j = 3*i;
+				analogWrite(pins[j],   255-((leds[i].r*maxOut.r)>>8));
+				analogWrite(pins[j+1], 255-((leds[i].g*maxOut.g)>>8));
+				analogWrite(pins[j+2], 255-((leds[i].b*maxOut.b)>>8));
+			}
 		}
 	}
 	
