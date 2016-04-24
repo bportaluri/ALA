@@ -18,6 +18,8 @@ public:
 
 	void initPWM(byte pinsRed, byte pinGreen, byte pinBlue);
 	void initPWM(int numLeds, byte *pins);
+	void initBP(byte pinsRed, byte pinGreen, byte pinBlue);
+	void initBP(int numLeds, byte *pins);
 	void initTLC5940(int numLeds, byte *pins);
     
     /**
