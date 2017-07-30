@@ -5,9 +5,6 @@
 #include "ExtTlc5940.h"
 
 
-Adafruit_NeoPixel *neopixels;
-
-
 
 
 AlaLedRgb::AlaLedRgb()
@@ -156,6 +153,7 @@ void AlaLedRgb::setAnimation(AlaSeq animSeq[])
     {
 		animSeqDuration = animSeqDuration + animSeq[animSeqLen].duration;
     }
+	animSeqStartTime = millis();
 }
 
 void AlaLedRgb::nextAnimation()
@@ -185,7 +183,7 @@ bool AlaLedRgb::runAnimation()
 		else
 		{
 			long c = 0;
-			long t = cTime % animSeqDuration;
+			long t = (cTime-animSeqStartTime) % animSeqDuration;
 			for(int i=0; i<animSeqLen; i++)
 			{
 				if (t>=c && t<(c+animSeq[i].duration))

@@ -3,7 +3,7 @@
 
 #include "Ala.h"
 
-
+#include "ExtNeoPixel.h"
 
 /**
  *  AlaLedRgb can be used to drive a single or multiple RGB leds to perform animations.
@@ -107,10 +107,13 @@ private:
 	int refreshMillis;
 	int refreshRate;   // current refresh rate
 	unsigned long animStartTime;
+	unsigned long animSeqStartTime;
 	unsigned long lastRefreshTime;
 	
 	float *pxPos;
 	float *pxSpeed;
+	
+	Adafruit_NeoPixel *neopixels;
 
 };
 
