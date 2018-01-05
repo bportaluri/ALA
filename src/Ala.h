@@ -95,11 +95,11 @@ struct AlaColor
         };
         uint8_t raw[3];
     };
-    
+
     inline AlaColor() __attribute__((always_inline))
     {
     }
-    
+
     // allow construction from R, G, B
     inline AlaColor( uint8_t ir, uint8_t ig, uint8_t ib)  __attribute__((always_inline))
     : r(ir), g(ig), b(ib)
@@ -111,8 +111,8 @@ struct AlaColor
     : r((colorcode >> 16) & 0xFF), g((colorcode >> 8) & 0xFF), b((colorcode >> 0) & 0xFF)
     {
     }
-    
-    bool operator == (const AlaColor &c) const 
+
+    bool operator == (const AlaColor &c) const
     {
         return(this->r == c.r and this->g == c.g and this->b == c.b);
     }
@@ -137,7 +137,7 @@ struct AlaColor
         int b0 = x*(color.b - b) + b;
         return AlaColor(r0, g0, b0);
     }
-    
+
     AlaColor scale(float k)
     {
         int r0 = min(r*k, 255);
@@ -145,8 +145,8 @@ struct AlaColor
         int b0 = min(b*k, 255);
         return AlaColor(r0, g0, b0);
     }
-	
-    
+
+
     typedef enum {
         Aqua    = 0x00FFFF,
         Black   = 0x000000,
@@ -177,7 +177,7 @@ struct AlaPalette
 {
     int numColors;
     AlaColor *colors;
-    
+
     /**
     * Get the interpolated color from the palette.
     * The argument is a floating number between 0 and numColors.
@@ -186,19 +186,19 @@ struct AlaPalette
     {
         int i0 = (int)i%(numColors);
         int i1 = (int)(i+1)%(numColors);
-        
+
         // decimal part is used to interpolate between the two colors
         float t0 = i - trunc(i);
         //float t0 = i - (int)i;
 
         return colors[i0].interpolate(colors[i1], t0);
     }
-    
-    bool operator == (const AlaPalette &c) const 
+
+    bool operator == (const AlaPalette &c) const
     {
         if (!(this->numColors == c.numColors))
             return false;
-        
+
         for(int i=0; i<numColors; i++)
         {
             if (!(this->colors[i] == c.colors[i]))
@@ -206,7 +206,7 @@ struct AlaPalette
         }
         return true;
     }
-    
+
 };
 
 

@@ -40,7 +40,7 @@ public:
     * pin  9 > xxx resistor to GND
     * pin 10 > +5V
     * pin 11 > Arduino 3
-    * 
+    *
     * It can be used also to drive a single led.
     */
     void initTLC5940(int numLeds, byte *pins);
@@ -56,14 +56,14 @@ public:
     * May be useful to reduce flickering in some cases.
     */
     void setRefreshRate(int refreshRate);
-	
-	int getRefreshRate();
+
+    int getRefreshRate();
 
     void setAnimation(int animation, long speed);
     void setAnimation(AlaSeq animSeq[]);
 
     void runAnimation();
-	void nextAnimation();
+    void nextAnimation();
 
 
 private:
@@ -76,36 +76,36 @@ private:
     void sparkle();
     void sparkle2();
     void strobo();
-	
+
     void pixelShiftRight();
     void pixelShiftLeft();
     void pixelBounce();
     void pixelSmoothShiftRight();
     void pixelSmoothShiftLeft();
-	void pixelSmoothBounce();
+    void pixelSmoothBounce();
     void comet();
     void barShiftRight();
     void barShiftLeft();
     void larsonScanner();
     void larsonScanner2();
-	
+
     void fadeIn();
     void fadeOut();
     void fadeInOut();
     void glow();
-	void flame();
+    void flame();
 
 
     byte driver; // type of led driver: ALA_PWM, ALA_TLC5940
     byte *pins;  // pins where the leds are attached to
     byte *leds;  // array to store leds brightness values
     int numLeds; // number of leds
-    
+
     int maxOut;
     int refreshMillis;
 
     int animation;
-	int currAnim;
+    int currAnim;
     long speed;
     AlaSeq *animSeq;
     int animSeqLen;
