@@ -22,10 +22,11 @@ char cmdBuffer[CMDBUFSIZE];
 // global settings and initial values
 int animation = ALA_OFF;
 AlaColor color = 0xdddddd;
+AlaColor white = 0xffffff;
 AlaPalette palette = alaPalNull;
 int paletteId=0;
-float brightness = 0.4;
-long duration = 1000;
+float brightness = 0.3;
+long duration = 5000;
 
 
 void setup()
@@ -68,7 +69,7 @@ void loop()
         break;
       case 'B':
         brightness = atoi(&cmdBuffer[2]);
-        rgbStrip.setBrightness(color.scale((float)brightness / 100));
+        rgbStrip.setBrightness(white.scale((float)brightness / 100));
         Serial.println("OK");
         break;
       case 'C':
