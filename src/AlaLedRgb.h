@@ -77,6 +77,7 @@ private:
     void fadeOut();
     void fadeInOut();
     void glow();
+    void plasma();
     void fadeColors();
     void pixelsFadeColors();
     void fadeColorsLoop();

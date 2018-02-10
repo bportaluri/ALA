@@ -271,6 +271,7 @@ void AlaLedRgb::setAnimationFunc(int animation)
         case ALA_FADEOUT:               animFunc = &AlaLedRgb::fadeOut;               break;
         case ALA_FADEINOUT:             animFunc = &AlaLedRgb::fadeInOut;             break;
         case ALA_GLOW:                  animFunc = &AlaLedRgb::glow;                  break;
+        case ALA_PLASMA:                animFunc = &AlaLedRgb::plasma;                break;
         case ALA_PIXELSFADECOLORS:      animFunc = &AlaLedRgb::pixelsFadeColors;      break;
         case ALA_FADECOLORS:            animFunc = &AlaLedRgb::fadeColors;            break;
         case ALA_FADECOLORSLOOP:        animFunc = &AlaLedRgb::fadeColorsLoop;        break;
@@ -544,6 +545,18 @@ void AlaLedRgb::glow()
     for(int x=0; x<numLeds; x++)
     {
         leds[x] = palette.colors[0].scale(k);
+    }
+}
+
+void AlaLedRgb::plasma()
+{
+    float t = getStepFloat(animStartTime, speed, numLeds);
+
+    for(int x=0; x<numLeds; x++)
+    {
+        AlaColor c1 = palette.getPalColor((float)((x+t)*palette.numColors)/numLeds);
+        AlaColor c2 = palette.getPalColor((float)((2*x-t+numLeds)*palette.numColors)/numLeds);
+        leds[x] = c1.interpolate(c2, 0.5);
     }
 }
 

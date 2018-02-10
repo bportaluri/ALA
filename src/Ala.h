@@ -63,6 +63,7 @@ along with The Arduino ALA library.  If not, see
 #define ALA_FADEOUT 302
 #define ALA_FADEINOUT 303
 #define ALA_GLOW 304
+#define ALA_PLASMA 305
 
 #define ALA_FADECOLORS 351
 #define ALA_FADECOLORSLOOP 352
