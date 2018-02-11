@@ -77,6 +77,14 @@ AlaColor alaPalFire_[] =
 };
 AlaPalette alaPalFire = { 6, alaPalFire_ };
 
+AlaColor alaPalCool_[] =
+{
+    0x0000FF,
+    0x0099DD, 0x444488, 0x9900DD
+};
+AlaPalette alaPalCool = { 4, alaPalCool_ };
+
+
 
 
 

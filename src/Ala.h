@@ -243,6 +243,8 @@ extern AlaPalette alaPalHeat;
 // Fire palette to be used with ALA_FIRE effect
 extern AlaPalette alaPalFire;
 
+extern AlaPalette alaPalCool;
+
 
 
 
