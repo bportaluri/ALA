@@ -103,6 +103,9 @@ void loop()
         case 5:
           palette=alaPalFire;
           break;
+        case 6:
+          palette=alaPalCool;
+          break;
         }
         break;
       
