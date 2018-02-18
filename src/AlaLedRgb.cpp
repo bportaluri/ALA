@@ -654,27 +654,27 @@ void AlaLedRgb::fire()
     int rMax = (COOLING / numLeds) + 2;
     for(int i=0; i<numLeds; i++)
     {
-      heat[i] = max(((int)heat[i]) - random(0, rMax), 0);
+        heat[i] = max(((int)heat[i]) - random(0, rMax), 0);
     }
 
     // Step 2.  Heat from each cell drifts 'up' and diffuses a little
     for(int k=numLeds-1; k>=3; k--)
     {
-      heat[k] = ((int)heat[k - 1] + (int)heat[k - 2] + (int)heat[k - 3] ) / 3;
+        heat[k] = ((int)heat[k - 1] + (int)heat[k - 2] + (int)heat[k - 3] ) / 3;
     }
 
     // Step 3.  Randomly ignite new 'sparks' of heat near the bottom
     if(random(255) < SPARKING)
     {
-      int y = random(7);
-      heat[y] = min(heat[y] + random(160, 255), 255);
+        int y = random(7);
+        heat[y] = min(heat[y] + random(160, 255), 255);
     }
 
     // Step 4.  Map from heat cells to LED colors
     for(int j=0; j<numLeds; j++)
     {
-      float colorindex = (float)(heat[j] * (palette.numColors-1) ) / 256;
-      leds[j] = palette.getPalColor(colorindex);
+        float colorindex = (float)(heat[j] * (palette.numColors-1) ) / 256;
+        leds[j] = palette.getPalColor(colorindex);
     }
 }
 
