@@ -154,15 +154,20 @@ void AlaLedRgb::setAnimation(AlaSeq animSeq[])
         animSeqDuration = animSeqDuration + animSeq[animSeqLen].duration;
     }
     animSeqStartTime = millis();
+    setAnimation(animSeq[0].animation, animSeq[0].speed, animSeq[0].palette);
 }
 
-void AlaLedRgb::nextAnimation()
+int AlaLedRgb::getAnimation()
 {
-    currAnim = (currAnim+1)%animSeqLen;
+    return animation;
 }
+
 
 bool AlaLedRgb::runAnimation()
 {
+    if(animation == ALA_STOPSEQ)
+        return;
+    
     // skip the refresh if not enough time has passed since last update
     unsigned long cTime = millis();
     if (cTime < lastRefreshTime + refreshMillis)
@@ -173,65 +178,58 @@ bool AlaLedRgb::runAnimation()
 
     lastRefreshTime = cTime;
 
-
+    // if it's a sequence we have to calculate the current animation
     if (animSeqLen != 0)
     {
-        if(animSeq[currAnim].duration == 0)
+        long c = 0;
+        long t = (cTime-animSeqStartTime) % animSeqDuration;
+        for(int i=0; i<animSeqLen; i++)
         {
-            setAnimation(animSeq[currAnim].animation, animSeq[currAnim].speed, animSeq[currAnim].palette);
-        }
-        else
-        {
-            long c = 0;
-            long t = (cTime-animSeqStartTime) % animSeqDuration;
-            for(int i=0; i<animSeqLen; i++)
+            if (t>=c && t<(c+animSeq[i].duration))
             {
-                if (t>=c && t<(c+animSeq[i].duration))
-                {
-                    setAnimation(animSeq[i].animation, animSeq[i].speed, animSeq[i].palette);
-                    break;
-                }
-                c = c + animSeq[i].duration;
+                setAnimation(animSeq[i].animation, animSeq[i].speed, animSeq[i].palette);
+                break;
             }
+            c = c + animSeq[i].duration;
         }
     }
 
+
+    // run the animantion calculation
     if (animFunc != NULL)
-    {
         (this->*animFunc)();
 
-        // use an 8 bit shift to divide by 256
+    // update leds
+    if(driver==ALA_PWM)
+    {
+        for(int i=0; i<numLeds; i++)
+        {
+            int j = 3*i;
+            // use an 8 bit shift to divide by 256
+            analogWrite(pins[j],   (leds[i].r*maxOut.r)>>8);
+            analogWrite(pins[j+1], (leds[i].g*maxOut.g)>>8);
+            analogWrite(pins[j+2], (leds[i].b*maxOut.b)>>8);
+        }
+    }
+    else if(driver==ALA_TLC5940)
+    {
+        // TLC5940 maximum output is 4095 so shifts only 4 bits
+        for(int i=0; i<numLeds; i++)
+        {
+            int j = 3*i;
+            Tlc.set(pins[j],   (leds[i].r*maxOut.r)>>4);
+            Tlc.set(pins[j+1], (leds[i].g*maxOut.g)>>4);
+            Tlc.set(pins[j+2], (leds[i].b*maxOut.b)>>4);
+        }
+        Tlc.update();
+    }
+    else if(driver==ALA_WS2812)
+    {
+        // this is not really so smart...
+        for(int i=0; i<numLeds; i++)
+            neopixels->setPixelColor(i, neopixels->Color((leds[i].r*maxOut.r)>>8, (leds[i].g*maxOut.g)>>8, (leds[i].b*maxOut.b)>>8));
 
-        if(driver==ALA_PWM)
-        {
-            for(int i=0; i<numLeds; i++)
-            {
-                int j = 3*i;
-                analogWrite(pins[j],   (leds[i].r*maxOut.r)>>8);
-                analogWrite(pins[j+1], (leds[i].g*maxOut.g)>>8);
-                analogWrite(pins[j+2], (leds[i].b*maxOut.b)>>8);
-            }
-        }
-        else if(driver==ALA_TLC5940)
-        {
-            // TLC5940 maximum output is 4095 so shifts only 4 bits
-            for(int i=0; i<numLeds; i++)
-            {
-                int j = 3*i;
-                Tlc.set(pins[j],   (leds[i].r*maxOut.r)>>4);
-                Tlc.set(pins[j+1], (leds[i].g*maxOut.g)>>4);
-                Tlc.set(pins[j+2], (leds[i].b*maxOut.b)>>4);
-            }
-            Tlc.update();
-        }
-        else if(driver==ALA_WS2812)
-        {
-            // this is not really so smart...
-            for(int i=0; i<numLeds; i++)
-                neopixels->setPixelColor(i, neopixels->Color((leds[i].r*maxOut.r)>>8, (leds[i].g*maxOut.g)>>8, (leds[i].b*maxOut.b)>>8));
-
-            neopixels->show();
-        }
+        neopixels->show();
     }
 
     return true;

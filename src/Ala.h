@@ -75,6 +75,7 @@ along with The Arduino ALA library.  If not, see
 #define ALA_BUBBLES 503
 
 #define ALA_ENDSEQ 0
+#define ALA_STOPSEQ 1
 
 ////////////////////////////////////////////////////////////////////////////////
 

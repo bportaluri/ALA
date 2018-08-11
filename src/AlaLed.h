@@ -61,9 +61,9 @@ public:
 
     void setAnimation(int animation, long speed);
     void setAnimation(AlaSeq animSeq[]);
+    int getAnimation();
 
-    void runAnimation();
-    void nextAnimation();
+    bool runAnimation();
 
 
 private:
@@ -103,9 +103,9 @@ private:
 
     int maxOut;
     int refreshMillis;
+    int refreshRate;   // current refresh rate
 
     int animation;
-    int currAnim;
     long speed;
     AlaSeq *animSeq;
     int animSeqLen;
@@ -113,6 +113,7 @@ private:
 
     void (AlaLed::*animFunc)();
     unsigned long animStartTime;
+    unsigned long animSeqStartTime;
     unsigned long lastRefreshTime;
 
 };

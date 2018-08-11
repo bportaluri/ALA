@@ -45,8 +45,9 @@ public:
     void setAnimation(int animation, long speed, AlaColor color);
     void setAnimation(int animation, long speed, AlaPalette palette);
     void setAnimation(AlaSeq animSeq[]);
+    int getAnimation();
+
     bool runAnimation();
-    void nextAnimation();
 
 
 
@@ -96,7 +97,6 @@ private:
     int numLeds;    // number of leds
 
     int animation;
-    int currAnim;
     long speed;
     AlaPalette palette;
     AlaSeq *animSeq;

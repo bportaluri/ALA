@@ -94,31 +94,38 @@ void AlaLed::setAnimation(AlaSeq animSeq[])
     {
         animSeqDuration = animSeqDuration + animSeq[animSeqLen].duration;
     }
-
+    animSeqStartTime = millis();
+    setAnimation(animSeq[0].animation, animSeq[0].speed);
 }
 
-void AlaLed::nextAnimation()
+int AlaLed::getAnimation()
 {
-    currAnim = (currAnim+1)%animSeqLen;
+    return animation;
 }
 
-void AlaLed::runAnimation()
+
+bool AlaLed::runAnimation()
 {
-    // skip the refresh if now enough time has passed since last update
-    if (millis() < lastRefreshTime + refreshMillis)
+    if(animation == ALA_STOPSEQ)
         return;
-    lastRefreshTime = millis();
 
+    // skip the refresh if not enough time has passed since last update
+    unsigned long cTime = millis();
+    if (cTime < lastRefreshTime + refreshMillis)
+        return false;
+
+    // calculate real refresh rate
+    refreshRate = 1000/(cTime - lastRefreshTime);
+
+    lastRefreshTime = cTime;
+
+    // if it's a sequence we have to calculate the current animation
     if (animSeqLen != 0)
     {
-        // calculate the current animation function
-        // NOTE: this can be optimized
-
         long c = 0;
+        long t = (cTime-animSeqStartTime) % animSeqDuration;
         for(int i=0; i<animSeqLen; i++)
         {
-            long t = millis()%animSeqDuration;   // this loops
-
             if (t>=c && t<(c+animSeq[i].duration))
             {
                 setAnimation(animSeq[i].animation, animSeq[i].speed);
@@ -128,25 +135,26 @@ void AlaLed::runAnimation()
         }
     }
 
-    // can the animation function and refresh if necessary
+
+    // run the animantion calculation
     if (animFunc != NULL)
-    {
         (this->*animFunc)();
 
-        if(driver==ALA_PWM)
-        {
-            for(int i=0; i<numLeds; i++)
-                analogWrite(pins[i], leds[i]);
-        }
-        else if(driver==ALA_TLC5940)
-        {
-            for(int i=0; i<numLeds; i++)
-                Tlc.set(pins[i], leds[i]*16);
-
-            Tlc.update();
-        }
+    // update leds
+    if(driver==ALA_PWM)
+    {
+        for(int i=0; i<numLeds; i++)
+            analogWrite(pins[i], leds[i]);
     }
+    else if(driver==ALA_TLC5940)
+    {
+        for(int i=0; i<numLeds; i++)
+            Tlc.set(pins[i], leds[i]*16);
 
+        Tlc.update();
+    }
+    
+    return true;
 }
 
 
