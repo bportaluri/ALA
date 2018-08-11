@@ -23,10 +23,10 @@ public:
     /**
     * Initializes WS2812 LEDs. It be invoked in the setup() function of the main Arduino sketch.
     *
-    * The type field can be used to set the RGB order and chipset frequency. Constants are Adafruit_NeoPixel.h file.
+    * The type field can be used to set the RGB order and chipset frequency. Constants are ExtNeoPixel.h file.
     * It is set by default to NEO_GRB + NEO_KHZ800.
     */
-    void initWS2812(int numLeds, byte pin, byte type=0x01+0x02);
+    void initWS2812(int numLeds, byte pin, byte type=NEO_GRB+NEO_KHZ800);
 
     /**
     * Sets the maximum brightness level.
