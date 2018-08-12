@@ -107,7 +107,7 @@ int AlaLed::getAnimation()
 bool AlaLed::runAnimation()
 {
     if(animation == ALA_STOPSEQ)
-        return;
+        return true;
 
     // skip the refresh if not enough time has passed since last update
     unsigned long cTime = millis();

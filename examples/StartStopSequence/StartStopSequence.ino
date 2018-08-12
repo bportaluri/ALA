@@ -50,7 +50,7 @@ void setup()
   
   Serial.println("\nAnimation sequences starting\n");
 
-  // 24 leds driven by pin 11
+  // 10 leds driven by pin 6
   rgbStrip.initWS2812(10, 6);
   rgbStrip.setBrightness(0x444444);
 
