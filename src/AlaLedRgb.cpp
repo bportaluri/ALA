@@ -118,6 +118,7 @@ void AlaLedRgb::setAnimation(int animation, long speed, AlaColor color)
     this->palette.colors = (AlaColor*)malloc(3);
     this->palette.colors[0] = color;
 
+	animSeqLen=0;
     setAnimationFunc(animation);
     animStartTime = millis();
 }
@@ -138,6 +139,7 @@ void AlaLedRgb::setAnimation(int animation, long speed, AlaPalette palette)
     this->speed = speed;
     this->palette = palette;
 
+	animSeqLen=0;
     setAnimationFunc(animation);
     animStartTime = millis();
 }
