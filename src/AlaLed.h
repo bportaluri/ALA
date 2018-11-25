@@ -59,8 +59,9 @@ public:
 
     int getRefreshRate();
 
-    void setAnimation(int animation, long speed);
+    void setAnimation(int animation, long speed, bool isSeq=false);
     void setAnimation(AlaSeq animSeq[]);
+	void setSpeed(long speed);
     int getAnimation();
 
     bool runAnimation();

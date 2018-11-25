@@ -99,7 +99,7 @@ int AlaLedRgb::getCurrentRefreshRate()
 }
 
 
-void AlaLedRgb::setAnimation(int animation, long speed, AlaColor color)
+void AlaLedRgb::setAnimation(int animation, long speed, AlaColor color, bool isSeq)
 {
     // is there any change?
     if (this->animation == animation && this->speed == speed && this->palette.numColors == 1 && this->palette.colors[0] == color)
@@ -115,15 +115,18 @@ void AlaLedRgb::setAnimation(int animation, long speed, AlaColor color)
     this->speed = speed;
 
     this->palette.numColors = 1;
-    this->palette.colors = (AlaColor*)malloc(3);
+    // TODO is this a memory leak?
+	this->palette.colors = (AlaColor*)malloc(3);
     this->palette.colors[0] = color;
 
-	animSeqLen=0;
+	if (!isSeq)
+		animSeqLen=0;
     setAnimationFunc(animation);
     animStartTime = millis();
 }
 
-void AlaLedRgb::setAnimation(int animation, long speed, AlaPalette palette)
+
+void AlaLedRgb::setAnimation(int animation, long speed, AlaPalette palette, bool isSeq)
 {
     // is there any change?
     if (this->animation == animation && this->speed == speed && this->palette == palette)
@@ -139,7 +142,8 @@ void AlaLedRgb::setAnimation(int animation, long speed, AlaPalette palette)
     this->speed = speed;
     this->palette = palette;
 
-	animSeqLen=0;
+	if (!isSeq)
+		animSeqLen=0;
     setAnimationFunc(animation);
     animStartTime = millis();
 }
@@ -156,7 +160,18 @@ void AlaLedRgb::setAnimation(AlaSeq animSeq[])
         animSeqDuration = animSeqDuration + animSeq[animSeqLen].duration;
     }
     animSeqStartTime = millis();
-    setAnimation(animSeq[0].animation, animSeq[0].speed, animSeq[0].palette);
+    setAnimation(animSeq[0].animation, animSeq[0].speed, animSeq[0].palette, true);
+}
+
+void AlaLedRgb::setSpeed(long speed)
+{
+    this->speed = speed;
+	animStartTime = millis();
+}
+
+void AlaLedRgb::setColor(AlaColor color)
+{
+    this->palette.colors[0] = color;
 }
 
 int AlaLedRgb::getAnimation()
@@ -189,7 +204,7 @@ bool AlaLedRgb::runAnimation()
         {
             if (t>=c && t<(c+animSeq[i].duration))
             {
-                setAnimation(animSeq[i].animation, animSeq[i].speed, animSeq[i].palette);
+                setAnimation(animSeq[i].animation, animSeq[i].speed, animSeq[i].palette, true);
                 break;
             }
             c = c + animSeq[i].duration;

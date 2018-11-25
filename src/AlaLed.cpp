@@ -71,7 +71,7 @@ void AlaLed::setRefreshRate(int refreshRate)
 }
 
 
-void AlaLed::setAnimation(int animation, long speed)
+void AlaLed::setAnimation(int animation, long speed, bool isSeq)
 {
     if (this->animation == animation && this->speed == speed)
         return;
@@ -79,7 +79,9 @@ void AlaLed::setAnimation(int animation, long speed)
     this->animation = animation;
     this->speed = speed;
 
-    setAnimationFunc(animation);
+	if (!isSeq)
+		animSeqLen=0;
+	setAnimationFunc(animation);
     animStartTime = millis();
 }
 
@@ -95,8 +97,15 @@ void AlaLed::setAnimation(AlaSeq animSeq[])
         animSeqDuration = animSeqDuration + animSeq[animSeqLen].duration;
     }
     animSeqStartTime = millis();
-    setAnimation(animSeq[0].animation, animSeq[0].speed);
+    setAnimation(animSeq[0].animation, animSeq[0].speed, true);
 }
+
+void AlaLed::setSpeed(long speed)
+{
+    this->speed = speed;
+	animStartTime = millis();
+}
+
 
 int AlaLed::getAnimation()
 {
@@ -128,7 +137,7 @@ bool AlaLed::runAnimation()
         {
             if (t>=c && t<(c+animSeq[i].duration))
             {
-                setAnimation(animSeq[i].animation, animSeq[i].speed);
+                setAnimation(animSeq[i].animation, animSeq[i].speed, true);
                 break;
             }
             c = c + animSeq[i].duration;
